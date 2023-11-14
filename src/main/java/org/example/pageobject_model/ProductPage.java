@@ -25,7 +25,7 @@ public class ProductPage extends BaseClass {
     }
 
     public ProductPage selectRandomProduct() {
-        waitHandlerClickable(20, anchorWait);
+        waitHandlerClickable(anchorWait);
         int maxQtyButtons = driver.findElements(By.xpath("//*[@class='product__additional-buttons']/span/span/a")).size();
         int value = getRandomSelectButton(1,maxQtyButtons);
         WebElement productByNumber = driver.findElement(By.xpath("(//*[@class='product__additional-buttons']/span/span/a)["+ value +"]"));

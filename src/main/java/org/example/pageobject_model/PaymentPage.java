@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 
 import java.util.List;
 import java.util.Random;
@@ -47,6 +48,8 @@ public class PaymentPage extends BaseClass {
     private WebElement bookingConfirmationModalClose;
     @FindBy(xpath = "//button[contains(@class,'SurveyInvitation__closeButton')]")
     private WebElement invitationModalClose;
+    @FindBy(xpath = "//*[@class='button button--primary button--arrow button--loading']")
+    private WebElement payNowLoadingButton;
 
     public int createRandomNumber() {
         Random random = new Random();
@@ -54,7 +57,6 @@ public class PaymentPage extends BaseClass {
         int max = 9999;
         return random.ints(min, max).findFirst().getAsInt();
     }
-
     public PaymentPage fillInRequiredFields() {
         int id = createRandomNumber();
         List<WebElement> requiredField = driver.findElements(By.xpath("//*[@data-validmag-required='true' and not(contains(@type,'email')) and not(contains(@id,'Vehicle'))]"));
@@ -65,68 +67,66 @@ public class PaymentPage extends BaseClass {
         }
         return this;
     }
-
     public PaymentPage fillInMainFields() {
         int id = createRandomNumber();
-        waitElementVisible(10 ,emailField);
+        waitElementVisible(emailField);
         emailField.sendKeys("booking" + id + "@mag.test");
         confirmEmailField.sendKeys("booking" + id + "@mag.test");
         vehicleRegistration.sendKeys("V" + id);
         findVehicleButton.click();
-        waitElementVisible(5, vehicleMake);
+        waitElementVisible(vehicleMake);
         vehicleMake.sendKeys("Make-" + id);
         vehicleModel.sendKeys("Model-" + id);
         vehicleColour.sendKeys("Red-" + id);
         return this;
     }
-
-    public PaymentPage fillInCardData() throws InterruptedException {
+    public PaymentPage fillInCardData()  {
         driver.switchTo().frame("braintree-hosted-field-number");
-        waitElementVisible(5, cardNumber);
+        waitElementVisible(cardNumber);
         cardNumber.sendKeys("4111111111111111");
         driver.switchTo().defaultContent();
         driver.switchTo().frame("braintree-hosted-field-expirationDate");
-        waitElementVisible(5, cardExpire);
+        waitElementVisible(cardExpire);
         cardExpire.sendKeys("1228");
         driver.switchTo().defaultContent();
         driver.switchTo().frame("braintree-hosted-field-cvv");
-        waitElementVisible(5, cardCVV);
+        waitElementVisible(cardCVV);
         cardCVV.sendKeys("123");
         driver.switchTo().defaultContent();
         return this;
     }
-
     public PaymentPage payNow() {
-        waitHandlerClickable(5, payNow);
+        waitHandlerClickable(payNow);
         payNow.click();
         return this;
     }
 
     public PaymentPage confirmBooking() {
-        waitElementVisible(30, confirmModal);
+        waitElementVisible(confirmModal);
         driver.switchTo().frame("Cardinal-CCA-IFrame");
-        waitHandlerClickable(10, confirmModalSubmit);
+        waitHandlerClickable(confirmModalSubmit);
         confirmModalInput.sendKeys("1234");
         confirmModalSubmit.click();
+        waitElementDisappear(confirmModal);
         return this;
     }
 
     public PaymentPage closeConfirmationModal() {
-        waitElementVisible(60, bookingConfirmationModalClose);
+        waitElementVisible(bookingConfirmationModalClose);
         bookingConfirmationModalClose.click();
         return this;
     }
     public PaymentPage ConfirmationModalDisplayed() {
-        waitElementVisible(30, bookingConfirmationModalClose);
+        waitElementVisible(bookingConfirmationModalClose);
         return this;
     }
     public PaymentPage closeInvitationModal() {
-        waitElementVisible(60, invitationModalClose);
+        waitElementVisible(invitationModalClose);
         invitationModalClose.click();
         return this;
     }
     public boolean isBookingCompleted() {
-        waitElementVisible(5, bookingConfirmationMessage);
+        waitElementVisible(bookingConfirmationMessage);
         return bookingConfirmationMessage.isDisplayed();
     }
 }

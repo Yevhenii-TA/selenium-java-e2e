@@ -43,7 +43,7 @@ public class LandingPage extends BaseClass {
 
     public LandingPage openHomePage() {
         driver.get(HOMEPAGE_URL);
-        waitHandlerClickable(5,acceptCookie);
+        waitHandlerClickable(acceptCookie);
         return this;
     }
     public LandingPage acceptCookies() {
@@ -70,7 +70,7 @@ public class LandingPage extends BaseClass {
         return this;
     }
     public LandingPage submitForm() {
-        waitHandlerClickable(5,submitForm);
+        waitHandlerClickable(submitForm);
         submitForm.click();
         return this;
     }

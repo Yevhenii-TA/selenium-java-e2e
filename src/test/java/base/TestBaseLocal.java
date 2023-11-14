@@ -13,7 +13,7 @@ public class TestBaseLocal {
     public void BrowserSetup() {
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(true);
-        driver = new ChromeDriver();
+        driver = new ChromeDriver(options);
         driver.manage().window().maximize();
     }
 

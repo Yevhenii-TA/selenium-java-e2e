@@ -1,21 +1,19 @@
 package tests;
 
 import base.TestBaseLocal;
-import org.example.pageobject_model.ExtrasPage;
-import org.example.pageobject_model.PaymentPage;
+import org.example.pageobject_model.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import org.example.pageobject_model.LandingPage;
-import org.example.pageobject_model.ProductPage;
 
 public class BookingFlow extends TestBaseLocal {
 
-    @Test (invocationCount = 10)
-    public void bookingMAN() throws InterruptedException {
+    @Test (invocationCount = 20)
+    public void bookingMAN()  {
         LandingPage landingPage = new LandingPage(driver);
         ProductPage productPage = new ProductPage(driver);
         ExtrasPage extrasPage = new ExtrasPage(driver);
         PaymentPage paymentPage = new PaymentPage(driver);
+        String expectedUrl = "https://booking.man.test.sso.maginfrastructure.com/parking/makebooking";
 
         landingPage.openHomePage()
                 .acceptCookies()
@@ -30,6 +28,7 @@ public class BookingFlow extends TestBaseLocal {
                 .fillInCardData()
                 .payNow()
                 .confirmBooking()
-                .ConfirmationModalDisplayed();
+                .waitUrl(expectedUrl);
+        Assert.assertEquals(driver.getCurrentUrl(), expectedUrl, "Booking was not completed");
     }
 }

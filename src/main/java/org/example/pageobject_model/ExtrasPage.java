@@ -27,7 +27,7 @@ public class ExtrasPage extends BaseClass {
     }
 
     public ExtrasPage selectRandomExtras() {
-        waitHandlerClickable(20, anchorWait);
+        waitHandlerClickable(anchorWait);
         int maxQtyButtons = driver.findElements(By.xpath("//*[contains(@id,'stepper-plus')]")).size();
         int value = getRandomSelectButton(1, maxQtyButtons);
         WebElement extraByNumber = driver.findElement(By.xpath("(//*[contains(@id,'stepper-plus')])[" + value + "]"));
@@ -36,7 +36,7 @@ public class ExtrasPage extends BaseClass {
         return this;
     }
     public ExtrasPage goToPayment() {
-        waitHandlerClickable(5, goToPaymentButton);
+        waitHandlerClickable(goToPaymentButton);
         goToPaymentButton.click();
         return this;
     }
