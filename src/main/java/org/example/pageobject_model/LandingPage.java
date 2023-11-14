@@ -41,16 +41,16 @@ public class LandingPage extends BaseClass {
     private WebElement acceptCookie;
     //endregion
 
-    public LandingPage openHomePage() {
-        driver.get(HOMEPAGE_URL);
-        waitHandlerClickable(acceptCookie);
+    public LandingPage openHomePage(String homepageUrl) {
+        driver.get(homepageUrl);
         return this;
     }
     public LandingPage acceptCookies() {
+        waitHandlerClickable(acceptCookie);
         acceptCookie.click();
         return this;
     }
-    public LandingPage fillEntryDates() { //rework this page, add Actions
+    public LandingPage fillEntryDates() {
         entryDateButton.click();
         selectEntryDate2Day.click();
         entryTimeButton.click();
