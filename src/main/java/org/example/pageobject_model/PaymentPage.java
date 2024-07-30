@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 
 import java.util.List;
 import java.util.Random;
@@ -30,12 +29,38 @@ public class PaymentPage extends BaseClass {
     private WebElement vehicleColour;
     @FindBy(css = "#credit-card-number")
     private WebElement cardNumber;
+    @FindBy(xpath = "//*[@name='CardNumber']")
+    private WebElement wCardNumber;
+    @FindBy(xpath = "//*[@name='CardHolderName']")
+    private WebElement wCardHolder;
     @FindBy(css = "#expiration")
     private WebElement cardExpire;
+    @FindBy(css = "#expiration-month")
+    private WebElement expMonth;
+    @FindBy(xpath = "//*[@id='DateExpiry_1']")
+    private WebElement wExpMonth;
+    @FindBy(xpath = "(//*[@id='DateExpiry_1']/option)[5]")
+    private WebElement wExpMonth5;
+    @FindBy(css = "#expiration-year")
+    private WebElement expYear;
+    @FindBy(xpath = "//*[@id='DateExpiry_2']")
+    private WebElement wExpYear;
+    @FindBy(xpath = "(//*[@id='DateExpiry_2']/option)[5]")
+    private WebElement wExpYear5;
     @FindBy(css = "#cvv")
     private WebElement cardCVV;
+    @FindBy(xpath = "//*[@name='Cvc2']")
+    private WebElement wCardCVV;
     @FindBy(xpath = "//a[contains(text(),'Pay Now')]")
     private WebElement payNow;
+    @FindBy(css = "#braintreeSubmit")
+    private WebElement payNowBoi;
+    @FindBy(xpath = "//button[@type='submit']")
+    private WebElement payNowBne;
+    @FindBy(xpath = "//button[@type='submit']/div")
+    private WebElement payNowBne2;
+    @FindBy(css = "button[type='submit']")
+    private WebElement payNowBne3;
     @FindBy(xpath = "//*[@id='Cardinal-Modal']")
     private WebElement confirmModal;
     @FindBy(xpath = "//*[@name='challengeDataEntry']")
@@ -50,6 +75,14 @@ public class PaymentPage extends BaseClass {
     private WebElement invitationModalClose;
     @FindBy(xpath = "//*[@class='button button--primary button--arrow button--loading']")
     private WebElement payNowLoadingButton;
+    @FindBy(css = "label[for='acceptedTermsAndConditions']")
+    private WebElement agreementCheck;
+    @FindBy(xpath = "//*[@id='braintree-hosted-field-number']")
+    private WebElement paymentFrame;
+    @FindBy(xpath = "//*[@id='windcaveiframe']")
+    private WebElement wPaymentFrame;
+    @FindBy(xpath = "//*[@paymentprovider='Windcave']")
+    private WebElement wPayByCard;
 
     public int createRandomNumber() {
         Random random = new Random();
@@ -70,14 +103,19 @@ public class PaymentPage extends BaseClass {
     public PaymentPage fillInMainFields() {
         int id = createRandomNumber();
         waitElementVisible(emailField);
-        emailField.sendKeys("booking" + id + "@mag.test");
-        confirmEmailField.sendKeys("booking" + id + "@mag.test");
+        /*emailField.sendKeys("booking" + id + "@mag.test");
+        confirmEmailField.sendKeys("booking" + id + "@mag.test");*/
+        emailField.sendKeys("yevhenii_ivanenko@epam.com");
+        confirmEmailField.sendKeys("yevhenii_ivanenko@epam.com");
         vehicleRegistration.sendKeys("V" + id);
-        findVehicleButton.click();
-        waitElementVisible(vehicleMake);
-        vehicleMake.sendKeys("Make-" + id);
-        vehicleModel.sendKeys("Model-" + id);
-        vehicleColour.sendKeys("Red-" + id);
+        /*if (findVehicleButton.isDisplayed()) {
+            findVehicleButton.click();
+            waitElementVisible(vehicleMake);
+            vehicleMake.sendKeys("Make-" + id);
+            vehicleModel.sendKeys("Model-" + id);
+            vehicleColour.sendKeys("Red-" + id);
+        }*/
+
         return this;
     }
     public PaymentPage fillInCardData()  {
@@ -95,9 +133,55 @@ public class PaymentPage extends BaseClass {
         driver.switchTo().defaultContent();
         return this;
     }
+    public PaymentPage fillInCardDataBoi()  {
+        waitElementVisible(paymentFrame);
+        driver.switchTo().frame("braintree-hosted-field-number");
+        waitElementVisible(cardNumber);
+        cardNumber.sendKeys("4111111111111111");
+        driver.switchTo().defaultContent();
+        driver.switchTo().frame("braintree-hosted-field-expirationMonth");
+        waitElementVisible(expMonth);
+        expMonth.sendKeys("12");
+        driver.switchTo().defaultContent();
+        driver.switchTo().frame("braintree-hosted-field-expirationYear");
+        waitElementVisible(expYear);
+        expYear.sendKeys("25");
+        driver.switchTo().defaultContent();
+        driver.switchTo().frame("braintree-hosted-field-cvv");
+        waitElementVisible(cardCVV);
+        cardCVV.sendKeys("123");
+        driver.switchTo().defaultContent();
+        return this;
+    }
+
+    public PaymentPage fillInCardDataBne()  {
+        waitHandlerClickable(wPayByCard);
+        wPayByCard.click();
+        waitElementVisible(wPaymentFrame);
+        driver.switchTo().frame("windcaveiframe");
+        wCardNumber.sendKeys("4111111111111111");
+        wCardHolder.sendKeys("TestLP");
+        wExpMonth.click();
+        wExpMonth5.click();
+        wExpYear.click();
+        wExpYear5.click();
+        wCardCVV.sendKeys("123");
+        return this;
+    }
     public PaymentPage payNow() {
         waitHandlerClickable(payNow);
         payNow.click();
+        return this;
+    }
+
+    public PaymentPage payNowBoi() {
+        waitHandlerClickable(payNowBoi);
+        payNowBoi.click();
+        return this;
+    }
+    public PaymentPage payNowBne() {
+        js.executeScript("document.querySelector(\"#\\\\33 6864199\").click()"); //wtf????
+        driver.switchTo().defaultContent();
         return this;
     }
 
@@ -108,6 +192,11 @@ public class PaymentPage extends BaseClass {
         confirmModalInput.sendKeys("1234");
         confirmModalSubmit.click();
         waitElementDisappear(confirmModal);
+        return this;
+    }
+
+    public PaymentPage selectAgreement() {
+        agreementCheck.click();
         return this;
     }
 

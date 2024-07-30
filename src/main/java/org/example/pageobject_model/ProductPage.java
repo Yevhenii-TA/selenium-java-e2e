@@ -24,13 +24,20 @@ public class ProductPage extends BaseClass {
         }
     }
 
-    public ProductPage selectRandomProduct() {
+    public ExtrasPage selectRandomProduct() {
         waitHandlerClickable(anchorWait);
         int maxQtyButtons = driver.findElements(By.xpath("//*[@class='product__additional-buttons']/span/span/a")).size();
         int value = getRandomSelectButton(1,maxQtyButtons);
         WebElement productByNumber = driver.findElement(By.xpath("(//*[@class='product__additional-buttons']/span/span/a)["+ value +"]"));
         System.out.println(value);
         productByNumber.click();
-        return this;
+        return new ExtrasPage(driver);
+    }
+
+    public ExtrasPage selectProductBne() {
+        waitHandlerClickable(anchorWait);
+        WebElement productBne = driver.findElement(By.xpath("(//*[@class='product__additional-buttons']/span/span/a)[3]"));
+        productBne.click();
+        return new ExtrasPage(driver);
     }
 }

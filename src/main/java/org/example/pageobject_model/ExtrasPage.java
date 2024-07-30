@@ -35,10 +35,13 @@ public class ExtrasPage extends BaseClass {
         extraByNumber.click();
         return this;
     }
-    public ExtrasPage goToPayment() {
+    public PaymentPage goToPayment() throws InterruptedException {
         waitHandlerClickable(goToPaymentButton);
-        goToPaymentButton.click();
-        return this;
+        Thread.sleep(5000);
+        if(goToPaymentButton.isDisplayed()) {
+            goToPaymentButton.click();
+        }
+        return new PaymentPage(driver);
     }
 
 }

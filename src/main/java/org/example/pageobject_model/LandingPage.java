@@ -39,6 +39,10 @@ public class LandingPage extends BaseClass {
     private WebElement submitForm;
     @FindBy(xpath = "//*[@id='cookie-accept']")
     private WebElement acceptCookie;
+    @FindBy(xpath = "//*[@id='chosenTerminal']")
+    private WebElement terminalDrop;
+    @FindBy(xpath = "(//select[@id='chosenTerminal']//option[not(@disabled='disabled')])[1]")
+    private WebElement firstTerminal;
     //endregion
 
     public LandingPage openHomePage(String homepageUrl) {
@@ -69,9 +73,15 @@ public class LandingPage extends BaseClass {
         numberOfPassengers.click();
         return this;
     }
-    public LandingPage submitForm() {
+    public ProductPage submitForm() {
         waitHandlerClickable(submitForm);
         submitForm.click();
+        return new ProductPage(driver);
+    }
+
+    public LandingPage selectTerminal() {
+        terminalDrop.click();
+        firstTerminal.click();
         return this;
     }
 

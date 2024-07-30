@@ -12,7 +12,7 @@ public class TestBaseLocal {
     @BeforeMethod(alwaysRun = true)
     public void BrowserSetup() {
         ChromeOptions options = new ChromeOptions();
-        options.setHeadless(true);
+        options.addArguments("--headless=new");
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
     }
